@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>InMoov 16-servo calibrator</title>
+  <link rel="stylesheet" href="calibrator.css?v=3">
+</head>
+<body>
+  <main>
+    <header class="topbar">
+      <div>
+        <p class="kicker">INMOOV HEAD / UNO + PCA9685</p>
+        <h1>16-servo calibration workspace</h1>
+        <p class="subtitle">Calibrate one channel at a time. Values are saved in this browser and can be exported for firmware review.</p>
+      </div>
+      <div class="header-actions">
+        <a class="secondary button-link" href="eye-calibrator.html">8-servo eye calibrator</a>
+        <a class="secondary button-link" href="fastcal.html">Fast calibrator</a>
+        <a class="secondary button-link" href="./">Back to face control</a>
+        <button id="connect">Connect Uno</button>
+      </div>
+    </header>
+
+    <section class="status-grid" aria-live="polite">
+      <article><span>Connection</span><strong id="connectionStatus">Disconnected</strong></article>
+      <article><span>Progress</span><strong id="progressStatus">0 / 16 saved</strong></article>
+      <article><span>Selected</span><strong id="selectedStatus">CH0</strong></article>
+      <article><span>Controller</span><strong id="controllerStatus">Outputs off</strong></article>
+    </section>
+
+    <section class="safety">
+      <div>
+        <h2>Before every movement</h2>
+        <p>Keep the servo-power switch reachable. Check that the selected linkage is clear. A calibration position is a command scale, not a measured physical angle.</p>
+      </div>
+      <label class="check"><input id="armed" type="checkbox"> Mechanism clear; I can cut servo power</label>
+      <button id="outputsOff" class="danger" disabled>Outputs off</button>
+    </section>
+
+    <div class="workspace">
+      <aside class="servo-panel">
+        <div class="panel-heading">
+          <div><p class="kicker">CHANNELS</p><h2>Choose one servo</h2></div>
+          <span id="savedBadge" class="badge">0 saved</span>
+        </div>
+        <div id="servoList" class="servo-list"></div>
+      </aside>
+
+      <section class="calibrator-panel">
+        <div class="active-heading">
+          <div>
+            <p id="activeGroup" class="kicker">EYES</p>
+            <h2 id="activeName">Left eye horizontal</h2>
+            <p id="activeMeta" class="subtitle">Servo 1 / PCA channel 0</p>
+          </div>
+          <span id="activeState" class="state unsaved">Not saved</span>
+        </div>
+
+        <div class="position-box">
+          <div class="field">
+            <label for="positionInput">Calibration position</label>
+            <div class="input-unit"><input id="positionInput" type="number" min="0" max="180" step="1"><span>deg</span></div>
+          </div>
+          <div class="field">
+            <label for="pulseInput">Pulse</label>
+            <div class="input-unit"><input id="pulseInput" type="number" step="1"><span>us</span></div>
+          </div>
+        </div>
+
+        <input id="positionSlider" class="position-slider" type="range" min="0" max="180" step="1" aria-label="Calibration position">
+        <div class="range-text"><span id="labelA">Left</span><span>0-180 calibration scale</span><span id="labelB">Right</span></div>
+
+        <div class="move-actions">
+          <button id="minus10" disabled>-10 us</button>
+          <button id="minus5" disabled>-5 us</button>
+          <button id="move" class="primary" disabled>Move selected servo</button>
+          <button id="plus5" disabled>+5 us</button>
+          <button id="plus10" disabled>+10 us</button>
+        </div>
+        <p id="moveStatus" class="message">Connect the Uno. Selecting a servo does not move it.</p>
+
+        <div class="record-grid">
+          <article><span id="recordALabel">Left endpoint</span><strong id="recordAValue">Not recorded</strong><button id="recordA" disabled>Record current</button></article>
+          <article id="neutralCard"><span>Neutral / rest</span><strong id="recordNeutralValue">Not recorded</strong><button id="recordNeutral" disabled>Record current</button></article>
+          <article><span id="recordBLabel">Right endpoint</span><strong id="recordBValue">Not recorded</strong><button id="recordB" disabled>Record current</button></article>
+        </div>
+
+        <div class="save-actions">
+          <button id="saveCurrent" class="save">Save this calibration in page</button>
+          <button id="saveNext" class="save">Save and select next</button>
+          <button id="loadBaseline" class="secondary">Load current firmware baseline</button>
+          <button id="loadAllBaselines" class="secondary">Restore recorded calibration (all 16)</button>
+        </div>
+        <p class="note">Saving here uses browser storage. It does not change firmware limits or upload anything to the Uno.</p>
+      </section>
+    </div>
+
+    <section class="saved-panel">
+      <div class="panel-heading">
+        <div><p class="kicker">SAVED RESULTS</p><h2>Calibration table</h2></div>
+        <div class="export-actions"><button id="exportJson" class="secondary">Export JSON</button><button id="exportCsv" class="secondary">Export CSV</button></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>CH</th><th>Part</th><th>Endpoint A</th><th>Neutral/rest</th><th>Endpoint B</th><th>Updated</th></tr></thead>
+          <tbody id="resultsBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="calibrator-page.js?v=5"></script>
+</body>
+</html>

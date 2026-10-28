@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>InMoov Face Control</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <p class="eyebrow">INMOOV • UNO + PCA9685</p>
+        <h1>Face control</h1>
+        <p><a href="easy-eye.html" style="color:var(--cyan)">Open easy eye endpoint calibration</a></p>
+        <p><a href="eye-calibrator.html" style="color:var(--cyan)">Open advanced 8-servo eye calibration</a></p>
+        <p><a href="calibrator.html" style="color:var(--cyan)">Open full 16-servo calibration workspace</a></p>
+        <p><a href="twin/" target="_blank" style="color:var(--cyan)">Open head digital twin ↗</a></p>
+        <p class="subtitle">Eyes, eyelids, eyebrows, forehead, nose, jaw and cheeks — 16 calibrated servos.</p>
+      </div>
+      <button id="connect" class="connect">Connect Uno</button>
+    </header>
+
+    <section class="statusbar" aria-live="polite">
+      <span id="dot" class="dot"></span>
+      <span id="status">Uno disconnected</span>
+      <span id="serialStatus" class="serial-status"></span>
+    </section>
+
+    <section id="manualControls" class="actions" aria-label="Face actions">
+      <button id="animate" disabled>Start animation</button>
+      <button id="neutral" disabled>All neutral</button>
+      <button id="testBlink" disabled>Test blink</button>
+      <button id="autoBlink" aria-pressed="false" disabled>Auto blink: OFF</button>
+      <button id="off" class="danger" disabled>Outputs off</button>
+    </section>
+
+    <nav class="view-tabs" role="tablist" aria-label="Control view">
+      <button id="manualTab" role="tab" aria-selected="true">Manual controls</button>
+      <button id="expressionTab" role="tab" aria-selected="false">Face expressions</button>
+    </nav>
+
+    <p class="subtitle">Auto blink works without a camera. Follow my face switches back to imitating your blinks.</p>
+    <section id="expressions" class="gesture-panel" aria-labelledby="gesture-title">
+      <div class="gesture-copy">
+        <p class="eyebrow">CALIBRATED EXPRESSIONS</p>
+        <h2 id="gesture-title">Face expressions</h2>
+        <p>Play one expression or cycle through every gesture. Auto blink stays active during the loop; keep this tab open while it runs.</p>
+      </div>
+      <div id="gestureButtons" class="gesture-buttons" aria-label="Choose a face gesture"></div>
+      <div class="gesture-controls">
+        <label for="gestureSpeed">Hold each gesture</label>
+        <select id="gestureSpeed">
+          <option value="2000">2 seconds</option>
+          <option value="3000" selected>3 seconds</option>
+          <option value="5000">5 seconds</option>
+        </select>
+        <button id="gesturePlay" aria-pressed="false" disabled>Play loop</button>
+        <button id="gestureNext" disabled>Next gesture</button>
+        <button id="gestureStop" disabled>Stop + neutral</button>
+      </div>
+      <div id="gestureStatus" class="gesture-status" role="status">Connect the Uno to play gestures.</div>
+    </section>
+    <section class="camera-panel">
+      <div class="camera-copy">
+        <p class="eyebrow">MEDIAPIPE • ON-DEVICE</p>
+        <h2>Live face tracking</h2>
+        <p>Your camera stays on this laptop. Eyes follow face position; eyebrows and forehead follow your brows. Open your mouth to move the jaw; smile or frown to lift or lower each cheek. Relax to close the jaw and center the cheeks. Nose control stays manual.</p>
+        <div class="camera-actions">
+          <button id="camera">Start camera</button>
+          <button id="follow" disabled>Follow my face</button>
+        </div>
+        <div id="faceStatus" class="face-status">Camera off</div>
+      </div>
+      <div class="camera-view">
+        <video id="video" playsinline muted></video>
+        <canvas id="overlay"></canvas>
+        <span class="camera-badge">LIVE</span>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title"><h2>Eyes</h2><span>Channels 0–3</span></div>
+      <div id="eyes" class="grid"></div>
+    </section>
+
+    <section>
+      <div class="section-title"><h2>Eyelids</h2><span>Channels 4–7</span></div>
+      <div id="eyelids" class="grid"></div>
+    </section>
+
+    <section>
+      <div class="section-title"><h2>Expression</h2><span>Channels 8, 9, 12, 13</span></div>
+      <div id="expression" class="grid"></div>
+    </section>
+    <section>
+      <div class="section-title"><h2>Nose</h2><span>Channel 10 · 1366–1500 µs</span></div>
+      <div id="nose" class="grid"></div>
+    </section>
+    <section>
+      <div class="section-title"><h2>Jaw</h2><span>Channel 11</span></div>
+      <p class="subtitle">0 closed / neutral · 90 half open · 180 fully open. Calibration positions, not measured degrees.</p>
+      <div id="jaw" class="grid"></div>
+    </section>
+    <section>
+      <div class="section-title"><h2>Cheeks</h2><span>Channels 14 and 15</span></div>
+      <p class="subtitle">90 is relaxed. Both sliders run down to up; the left servo direction is reversed.</p>
+      <div id="cheeks" class="grid"></div>
+    </section>
+
+    <p class="note">Move a slider, then release it to send the position. Eyelid zero is open/rest and 180 is closed. “Outputs off” releases every PCA9685 channel.</p>
+  </main>
+  <script type="module" src="app.js?v=11"></script>
+</body>
+</html>

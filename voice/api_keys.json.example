@@ -1,0 +1,5 @@
+{
+  "gemini_api_key": "YOUR_GEMINI_API_KEY_HERE",
+  "gemini_model": "gemini-flash-latest",
+  "llm_provider": "auto"
+}

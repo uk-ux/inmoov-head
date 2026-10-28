@@ -1,0 +1,174 @@
+/* IRIS · JARVIS HUD — dark navy surface, one cyan accent, status colors
+   reserved for real states (battery low, disk full, link down). */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#01050a; --panel:#040a12; --panel2:#060e18;
+  --line:#0c2033; --line2:#143349;
+  --ink:#d9e6f2; --muted:#6f8499; --faint:#3d4f61;
+  --accent:#38bdff; --accent-dim:#155d84;
+  --good:#39d98a; --warn:#ffb020; --crit:#ff5252;
+  --mono:Consolas,'Cascadia Mono',monospace;
+}
+html,body{height:100%}
+body{
+  background:var(--bg); color:var(--ink);
+  font:14px/1.45 'Segoe UI',system-ui,sans-serif;
+  display:flex; flex-direction:column; overflow:hidden;
+}
+body::before{ /* soft ambient vignette behind the orb, no grid */
+  content:''; position:fixed; inset:0; pointer-events:none;
+  background:radial-gradient(ellipse 60% 45% at 50% 34%,rgba(56,189,255,.05),transparent 70%);
+}
+
+/* ---------- header ---------- */
+header{
+  display:flex; align-items:center; gap:24px;
+  padding:14px 26px 10px; border-bottom:1px solid var(--line);
+}
+.brand{display:flex; flex-direction:column}
+.brand b{font-size:22px; letter-spacing:8px; color:var(--accent); font-weight:600}
+.brand span{font-size:10px; letter-spacing:3px; color:var(--muted)}
+#clock{
+  flex:1; text-align:center; font:600 44px/1 var(--mono);
+  letter-spacing:4px; color:var(--ink);
+}
+#clock small{font-size:18px; color:var(--muted); letter-spacing:2px}
+.hright{display:flex; flex-direction:column; align-items:flex-end; gap:6px}
+#date{font-size:13px; letter-spacing:2px; color:var(--muted); text-transform:uppercase}
+.badge{
+  font:600 10px/1 var(--mono); letter-spacing:2px; padding:5px 10px;
+  border:1px solid var(--line2); border-radius:3px; color:var(--muted);
+}
+.badge.on{color:var(--good); border-color:var(--good)}
+.badge.off{color:var(--crit); border-color:var(--crit)}
+button.badge{background:transparent;cursor:pointer}
+
+/* ---------- main grid ---------- */
+main{
+  flex:1; display:grid; grid-template-columns:280px 1fr 330px;
+  gap:16px; padding:16px 26px; min-height:0;
+}
+.col{display:flex; flex-direction:column; gap:14px; min-height:0; overflow-y:auto}
+.col::-webkit-scrollbar{width:6px}
+.col::-webkit-scrollbar-thumb{background:var(--line); border-radius:3px}
+
+.panel{
+  background:linear-gradient(180deg,var(--panel2),var(--panel));
+  border:1px solid var(--line); border-radius:6px; padding:12px 14px;
+}
+.panel h3{
+  font-size:10px; letter-spacing:3px; color:var(--accent);
+  font-weight:600; margin-bottom:10px; text-transform:uppercase;
+}
+.panel h3 small{color:var(--faint); letter-spacing:1px; float:right; font-weight:400}
+
+/* ---------- system meters ---------- */
+.meter{margin-bottom:10px}
+.meter .row{display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px}
+.meter .row b{font:600 13px var(--mono); color:var(--ink)}
+.meter .row span{color:var(--muted); letter-spacing:1px}
+.meter .bar{height:4px; background:#12283d; border-radius:2px; overflow:hidden}
+.meter .bar i{display:block; height:100%; width:0%; background:var(--accent);
+  border-radius:2px; transition:width .6s}
+.meter.warn .bar i{background:var(--warn)}
+.meter.crit .bar i{background:var(--crit)}
+.meter .state{font-size:10px; letter-spacing:1px; color:var(--warn)}
+.kv{display:flex; justify-content:space-between; font-size:12px; padding:3px 0;
+  border-bottom:1px dashed #10263c}
+.kv:last-child{border-bottom:0}
+.kv span{color:var(--muted)} .kv b{font:600 12px var(--mono); color:var(--ink)}
+
+/* ---------- center: orb + conversation ---------- */
+.center{display:flex; flex-direction:column; align-items:center; min-height:0}
+#orbWrap{position:relative; width:300px; height:300px; margin:0; flex-shrink:0}
+#orbWrap canvas{width:100%; height:100%; display:block}
+#stateText{font-size:12px; letter-spacing:3px; color:var(--muted); text-transform:uppercase; min-height:18px}
+
+#convo{
+  flex:1; width:100%; max-width:640px; margin:12px 0; overflow-y:auto;
+  display:flex; flex-direction:column; gap:8px; min-height:60px; padding:0 6px;
+}
+#convo::-webkit-scrollbar{width:6px}
+#convo::-webkit-scrollbar-thumb{background:var(--line)}
+.msg{max-width:85%; padding:7px 12px; border-radius:6px; font-size:13px}
+.msg.user{align-self:flex-end; background:#123a55; border:1px solid var(--line2)}
+.msg.iris{align-self:flex-start; background:var(--panel2); border:1px solid var(--line);
+  color:var(--ink)}
+.msg.iris.typing{color:var(--muted)}
+
+.mic-tools{width:100%;max-width:640px;display:flex;align-items:center;gap:10px}
+#micSelect{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:5px;color:var(--muted);font:500 11px/1 var(--mono);padding:7px 9px}
+.mic-meter{width:130px;height:7px;border:1px solid var(--line2);border-radius:9px;overflow:hidden;background:#04101a}
+#micBar{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--good),var(--accent));transition:width 60ms linear}
+
+.controls{width:100%; max-width:640px; display:flex; gap:10px; padding-bottom:4px}
+#talkBtn{
+  flex-shrink:0; width:150px; padding:11px 0; border-radius:6px; cursor:pointer;
+  background:transparent; border:1px solid var(--accent-dim);
+  color:var(--accent); font:600 11px/1 var(--mono); letter-spacing:2px;
+  user-select:none; -webkit-user-select:none; touch-action:none;
+}
+#talkBtn.rec{background:var(--accent); color:#04131f; box-shadow:0 0 18px rgba(70,200,255,.5)}
+#hfBtn{
+  flex-shrink:0; width:130px; padding:11px 0; border-radius:6px; cursor:pointer;
+  background:transparent; border:1px solid var(--line2);
+  color:var(--muted); font:600 11px/1 var(--mono); letter-spacing:2px;
+  user-select:none; -webkit-user-select:none;
+}
+#hfBtn.on{border-color:var(--accent); color:var(--accent);
+  box-shadow:0 0 14px rgba(56,189,255,.35)}
+#textIn{
+  flex:1; background:var(--panel); border:1px solid var(--line); border-radius:6px;
+  color:var(--ink); padding:0 14px; font-size:13px; outline:none;
+}
+#textIn:focus{border-color:var(--accent-dim)}
+
+/* ---------- right column: today ---------- */
+#schedule .kv b{color:var(--accent)}
+ul.tasks{list-style:none}
+ul.tasks li{
+  display:flex; align-items:flex-start; gap:9px; padding:6px 2px; font-size:13px;
+  border-bottom:1px dashed #10263c; cursor:pointer;
+}
+ul.tasks li:hover{background:rgba(70,200,255,.05)}
+ul.tasks li:last-child{border-bottom:0}
+ul.tasks li .box{
+  flex-shrink:0; width:14px; height:14px; margin-top:2px; border-radius:3px;
+  border:1px solid var(--accent-dim);
+}
+ul.tasks li:hover .box{border-color:var(--accent)}
+ul.tasks li .due{margin-left:auto; font:11px var(--mono); color:var(--warn); white-space:nowrap}
+.empty{color:var(--faint); font-size:12px; padding:4px 0}
+.mini{
+  width:100%; margin-top:8px; background:var(--panel); border:1px solid var(--line);
+  border-radius:5px; color:var(--ink); padding:7px 10px; font-size:12px; outline:none;
+}
+.mini:focus{border-color:var(--accent-dim)}
+.notestats{display:flex; gap:18px; margin-bottom:8px}
+.notestats div b{display:block; font:600 22px var(--mono); color:var(--ink)}
+.notestats div span{font-size:10px; letter-spacing:2px; color:var(--muted)}
+.note{font-size:12px; color:var(--muted); padding:5px 0; border-bottom:1px dashed #10263c}
+.note:last-child{border-bottom:0}
+.note b{color:var(--ink); font-weight:400}
+.note time{font:10px var(--mono); color:var(--faint); margin-right:6px}
+
+/* ---------- footer commands ---------- */
+footer{
+  display:flex; gap:8px; align-items:center; padding:10px 26px 14px;
+  border-top:1px solid var(--line); flex-wrap:wrap;
+}
+footer .lbl{font-size:10px; letter-spacing:3px; color:var(--faint)}
+.chip{
+  background:transparent; border:1px solid var(--line2); border-radius:14px;
+  color:var(--muted); font-size:11px; padding:5px 13px; cursor:pointer;
+  letter-spacing:1px;
+}
+.chip:hover{color:var(--accent); border-color:var(--accent-dim)}
+a.plain{color:var(--faint); font-size:11px; margin-left:auto; text-decoration:none}
+a.plain:hover{color:var(--accent)}
+
+@media(max-width:980px){
+  main{grid-template-columns:1fr; overflow-y:auto}
+  #clock{font-size:30px}
+  body{overflow:auto}
+}

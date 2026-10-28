@@ -1,0 +1,17 @@
+date,status,part,channel,endpoint_a_label,endpoint_a_us,neutral_or_rest_us,endpoint_b_label,endpoint_b_us,notes
+2026-10-14,confirmed,Left eye horizontal,0,Endpoint A,1072,1412,Endpoint B,1877,Re-measured via easy-eye.html; wider range than prior pass
+2026-10-14,confirmed,Left eye vertical,1,Up,1715,1545,Down,1375,Mechanically reversed; direction labels corrected after observed up/down inversion
+2026-10-14,confirmed,Right eye horizontal,2,Endpoint A,1257,1482,Endpoint B,1742,
+2026-10-14,confirmed,Right eye vertical,3,Endpoint A,1742,1472,Endpoint B,1187,Endpoint order swapped vs prior pass; same span
+2026-10-14,confirmed,Left upper eyelid,4,Open,1367,1367,Closed,1527,Open is rest
+2026-10-14,confirmed,Left lower eyelid,5,Open,1623,1623,Closed,1453,Open is rest; reversed pulse order
+2026-10-14,confirmed,Right upper eyelid,6,Open,1520,1520,Closed,1420,Open is rest; reversed pulse order
+2026-10-14,confirmed,Right lower eyelid,7,Open,1287,1287,Closed,1592,Open is rest
+2026-10-14,confirmed,Left eyebrow,8,Lower,1677,1517,Upper,1362,Reversed pulse order; center now independent of endpoints
+2026-10-14,confirmed,Right eyebrow,9,Lower,1322,1537,Upper,1670,Center now independent of endpoints
+,needs_recheck,Nose,10,Down,1366,1411,Up,1500,
+,needs_recheck,Jaw,11,Closed,1300,1300,Fully open,1700,Closed is rest
+2026-10-14,confirmed,Left forehead,12,Lower,1551,1471,Upper,1396,Reversed pulse order
+2026-10-14,confirmed,Right forehead,13,Lower,1490,1415,Upper,1330,Reversed pulse order
+,needs_recheck,Left cheek,14,Down,1700,1500,Pulled,1300,Reversed pulse order
+,needs_recheck,Right cheek,15,Down,1300,1500,Pulled,1700,

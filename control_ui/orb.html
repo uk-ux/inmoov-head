@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>IRIS · INMOOV OS</title>
+  <link rel="stylesheet" href="orb.css?v=17">
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <main>
+
+    <!-- ══════════ TOP BAR ══════════ -->
+    <header class="topbar">
+      <div class="hud-panel logo-block">
+        <div class="logo-mark"></div>
+        <div>
+          <div class="logo-title">I.R.I.S <span class="plus">+</span> INMOOV OS</div>
+          <div class="logo-sub">HUMANOID INTERFACE · VER 2.0</div>
+        </div>
+      </div>
+      <div class="hud-panel ask-block">
+        <div class="ask-title">I.R.I.S.</div>
+        <p id="status" class="status-line"><span class="status-dot"></span><span id="statusText">connecting…</span></p>
+      </div>
+      <div class="hud-panel date-block">
+        <div id="hudDay" class="hud-day">--</div>
+        <div>
+          <div id="hudMonth" class="hud-month">--</div>
+          <div id="hudWeekday" class="hud-weekday">--</div>
+          <div id="hudClock" class="hud-clock">--:--</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ══════════ LEFT COLUMN ══════════ -->
+    <aside class="col-left">
+      <section class="hud-panel">
+        <h2 class="hud-h">SYSTEM</h2>
+        <div class="sys-row"><span>CPU</span><div class="hud-meter"><div id="sysCpu" class="hud-bar"></div></div><b id="sysCpuV">--%</b></div>
+        <div class="sys-row"><span>RAM</span><div class="hud-meter"><div id="sysRam" class="hud-bar"></div></div><b id="sysRamV">--%</b></div>
+        <div class="sys-row"><span>BATT</span><div class="hud-meter"><div id="sysBatt" class="hud-bar"></div></div><b id="sysBattV">--%</b></div>
+        <div class="sys-row"><span>C:\</span><div class="hud-meter"><div id="sysDiskC" class="hud-bar warn"></div></div><b id="sysDiskCV">--%</b></div>
+        <div class="sys-row"><span>U:\</span><div class="hud-meter"><div id="sysDiskU" class="hud-bar"></div></div><b id="sysDiskUV">--%</b></div>
+      </section>
+
+      
+
+      <section class="hud-panel">
+        <h2 class="hud-h">VOICE LINK</h2>
+        <div class="control-col">
+          <button id="talk" class="talk" disabled>
+            <span class="talk-ring"></span>
+            <svg class="mic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/>
+            </svg>
+            <span id="talkLabel">HOLD TO TALK</span>
+          </button>
+          <button id="handsFree" class="hands-free" disabled>
+            <span class="switch"></span><span>HANDS-FREE</span>
+          </button>
+          <p class="hint">hold <kbd>Space</kbd> · Tamil / Telugu / Hindi / English</p>
+        </div>
+      </section>
+    </aside>
+
+    <!-- ══════════ CENTER: INMOOV SCHEMATIC ══════════ -->
+    <section class="center-stage">
+      <div class="core-wrap">
+        <canvas id="orb" width="900" height="900" aria-label="IRIS core"></canvas>
+        <div class="stage-caption">
+          <span class="cap-line">INMOOV OS · VOICE CORE</span>
+          <span id="stageStatus" class="cap-status">SYSTEMS NOMINAL</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ RIGHT COLUMN: CONSOLE ══════════ -->
+    <aside class="col-right hud-panel console">
+      <header class="side-head">
+        <nav class="tabs">
+          <button id="tabChat" class="tab active" type="button">CHAT</button>
+          <button id="tabTasks" class="tab" type="button">TASKS</button>
+          <button id="tabVoice" class="tab" type="button">VOICE</button>
+          <button id="tabMemory" class="tab" type="button">MEMORY</button>
+          <button id="tabSkills" class="tab" type="button">SKILLS</button>
+        </nav>
+        <span id="connBadge" class="badge">OFFLINE</span>
+      </header>
+
+      <div id="chatPanel" class="panel-fill">
+        <div id="messages" class="messages" aria-live="polite">
+          <div class="msg bot"><span class="who">IRIS</span>
+            <div class="bubble">Vanakkam. Hello. Hold the button and talk to me — Tamil, Telugu, Hindi or English.</div></div>
+        </div>
+        <form id="composer" class="composer" autocomplete="off">
+          <input id="textInput" type="text" placeholder="Type a command…" aria-label="Type a message">
+          <button type="submit" id="sendBtn">SEND</button>
+        </form>
+      </div>
+
+      <div id="tasksPanel" class="panel-fill settings" hidden>
+        <div>
+          <p class="field-label">TODAY <span id="taskDoneCount" style="float:right;opacity:.65"></span></p>
+          <div id="taskList" class="opt-list"></div>
+          <form id="taskForm" class="composer" autocomplete="off" style="margin-top:9px">
+            <input id="taskInput" type="text" placeholder="Add task… e.g. call amma at 6 pm" aria-label="Add task">
+            <button type="submit">ADD</button>
+          </form>
+        </div>
+        <div>
+          <p class="field-label">NOTES</p>
+          <div id="noteStats" class="stat-row"></div>
+          <div id="noteList" class="opt-list"></div>
+          <form id="noteForm" class="composer" autocomplete="off" style="margin-top:9px">
+            <input id="noteInput" type="text" placeholder="Capture a note…" aria-label="Capture a note">
+            <button type="submit">ADD</button>
+          </form>
+        </div>
+        <button id="briefBtn" class="btn btn-accent" type="button">▶ DAILY BRIEFING</button>
+        <p class="note">By voice: <em>"add task … at 6 pm"</em>, <em>"take a note …"</em>,
+          <em>"what are my tasks"</em>, <em>"task … done"</em>, <em>"daily briefing"</em>.</p>
+      </div>
+
+      <div id="voicePanel" class="panel-fill settings" hidden>
+        <div>
+          <p class="field-label">MICROPHONE</p>
+          <select id="micSelect" class="select" aria-label="Microphone"></select>
+          <div class="meter"><div id="micBar" class="meter-bar"></div></div>
+          <p class="note" style="margin-top:9px">A headset mic near your mouth beats the laptop array. Speak — the bar should reach the middle.</p>
+        </div>
+        <div>
+          <p class="field-label">VOICE</p>
+          <div id="voiceList" class="opt-list"></div>
+        </div>
+        <div>
+          <p class="field-label">LANGUAGES</p>
+          <p class="note">IRIS replies in the language you speak. Ready: <em>English, Tamil, Telugu, Hindi</em>; seven more download on first use.</p>
+        </div>
+        <button id="voiceTest" class="btn btn-accent" type="button">▶ PREVIEW VOICE</button>
+      </div>
+
+      <div id="memoryPanel" class="panel-fill settings" hidden>
+        <div>
+          <p class="field-label">LEARNED DATA</p>
+          <div id="memStats" class="stat-row"></div>
+        </div>
+        <p class="note">Say <em>"remember that …"</em> to teach, <em>"what do you know about me"</em> to hear it back.</p>
+        <div id="memList" class="opt-list"></div>
+        <button id="memClear" class="btn btn-danger" type="button">FORGET EVERYTHING</button>
+      </div>
+
+      <div id="skillsPanel" class="panel-fill settings" hidden>
+        <div>
+          <p class="field-label">BODY CONTROL</p>
+          <button id="motionBtn" class="btn" type="button">ENABLE MOTION (COM9)</button>
+          <p id="motionNote" class="note" style="margin-top:9px">Off. Enable after calibration, power switch in reach, calibrator disconnected.</p>
+        </div>
+        <div>
+          <p class="field-label">HEAD COMMANDS</p>
+          <div id="robotSkills" class="opt-list"></div>
+        </div>
+        <div>
+          <p class="field-label">LAPTOP COMMANDS</p>
+          <div id="laptopSkills" class="opt-list"></div>
+        </div>
+      </div>
+    </aside>
+  </main>
+  <script src="orb.js?v=17"></script>
+</body>
+</html>

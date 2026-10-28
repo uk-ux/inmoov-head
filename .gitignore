@@ -1,0 +1,39 @@
+# --- Secrets: never commit real keys (copy voice/api_keys.json.example) ---
+voice/api_keys.json
+
+# --- Personal data: IRIS regenerates these on first run ---
+voice/memory/transcript.jsonl
+voice/memory/facts.json
+voice/memory/notes.jsonl
+voice/memory/tasks.json
+voice/memory/phrases.json
+voice/memory/apps_catalog.json
+voice/test_logs/
+
+# --- Large downloads: recreate per voice/README.md ---
+voice/venv/
+voice/models/
+
+# --- Python ---
+__pycache__/
+*.pyc
+
+# --- Arduino build output (regenerated on compile) ---
+firmware/build_*/
+*.hex
+*.elf
+*.eep
+
+# --- Vendor archives (the extracted package is committed, the tarball is not) ---
+*.tgz
+
+# --- Deferred / excluded from this repo ---
+control_ui/twin/
+hardware/twin-tests/
+hardware/twin-browser-test/
+node_modules/
+
+# --- OS noise ---
+Thumbs.db
+desktop.ini
+.DS_Store

@@ -1,0 +1,43 @@
+# IRIS voice stack — direct dependencies only (pip resolves the rest).
+# Versions are the ones this build was validated against; relax if needed.
+#
+#   python -m venv venv
+#   venv\Scripts\pip install -r requirements.txt     (Windows)
+#   venv/bin/pip  install -r requirements.txt        (Linux/macOS)
+#
+# Model weights (~1.7 GB) are NOT pip packages — they download on first run
+# into voice/models/ (HF_HOME is set at the top of server.py).
+
+# --- Speech to text ---
+# Pulls ctranslate2. For GPU, also install the CUDA runtime wheels:
+#   pip install nvidia-cublas-cu12 nvidia-cudnn-cu12
+# CPU-only works without them, just slower.
+faster-whisper==1.2.1
+
+# --- Text to speech ---
+kokoro==0.9.4          # English neural voices
+piper-tts==1.8.0       # English fallback
+transformers==5.17.0   # Meta MMS voices: Tamil, Telugu, Hindi, etc.
+
+# torch is required by transformers. This is the CPU build — correct here,
+# since Whisper's GPU path goes through ctranslate2, not torch.
+# For a CUDA torch build instead:
+#   pip install torch --index-url https://download.pytorch.org/whl/cu121
+torch==2.14.0
+
+# --- Audio I/O ---
+numpy==2.5.3
+soundfile==0.14.0
+sounddevice==0.5.6
+
+# --- Server, serial, system ---
+websockets==17.1       # voice WebSocket on port 8766
+pyserial==3.5          # jaw/serial bridge
+psutil==7.2.2          # system meters on the dashboard
+
+# --- Tray client (voice/assistant.py) ---
+pystray==0.19.5
+pillow==12.3.0
+
+# --- Live web search enrichment (optional; set WEB_SEARCH=False to skip) ---
+ddgs==9.16.0

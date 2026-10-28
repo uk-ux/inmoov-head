@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Easy eye and eyebrow calibration</title>
+  <link rel="stylesheet" href="easy-eye.css?v=3">
+</head>
+<body>
+  <main>
+    <header>
+      <div><p class="eyebrow">UNO + PCA9685</p><h1>Easy eye and eyebrow calibration</h1><p>Choose one servo, start at rest, adjust slowly, and record safe limits that avoid collisions.</p></div>
+      <button id="connect">Connect Uno</button>
+    </header>
+
+    <section class="status"><span id="dot"></span><strong id="connection">Disconnected</strong><span id="reply">No movement sent</span></section>
+
+    <section class="safety">
+      <label><input id="safe" type="checkbox"> Servo power cutoff is reachable and the selected linkage is clear</label>
+      <button id="off" class="danger" disabled>OFF — all servos</button>
+    </section>
+
+    <section>
+      <p class="eyebrow">STEP 1</p><h2>Choose one servo</h2>
+      <div id="channels" class="channels"></div>
+    </section>
+
+    <section class="control">
+      <div><p class="eyebrow">STEP 2</p><h2 id="selectedName">Left eye horizontal</h2><p id="selectedMeta">CH0 · saved rest 1477 µs</p></div>
+      <button id="start" class="start" disabled>Start selected servo at rest</button>
+      <div class="pulse"><span>Current pulse</span><strong id="pulse">1477</strong><span>µs</span></div>
+      <div class="nudge"><button id="minus" disabled>◀ Hold to move</button><button id="plus" disabled>Hold to move ▶</button></div>
+      <p class="hold-note">Hold a movement button and release it at the safe endpoint.</p>
+    </section>
+
+    <section>
+      <p class="eyebrow">STEP 3</p><h2>Record the safe positions</h2>
+      <div class="records">
+        <button id="setA" disabled><span id="labelA">Set endpoint A</span><strong id="valueA">Not set</strong></button>
+        <button id="setR" disabled><span id="labelR">Set center</span><strong id="valueR">Not set</strong></button>
+        <button id="setB" disabled><span id="labelB">Set endpoint B</span><strong id="valueB">Not set</strong></button>
+      </div>
+      <p id="guide" class="guide">Start the selected servo, then set endpoint A.</p>
+      <button id="next" class="next" disabled>Servo complete — go to next channel</button>
+    </section>
+
+    <section class="finish">
+      <div><p class="eyebrow">FINISH</p><h2>Save into the Uno</h2><p>Repeat the three steps for each required servo, then save everything to EEPROM.</p></div>
+      <div class="finish-actions"><button id="save" disabled>Save all limits</button><a class="face-link" href="./">Open Face Control</a></div>
+    </section>
+
+    <p class="warning">If a servo buzzes, strains, or reaches a mechanical stop, press OFF immediately. The PCA9685 must first be detected at address 0x40.</p>
+  </main>
+  <script type="module" src="easy-eye.js?v=7"></script>
+</body>
+</html>

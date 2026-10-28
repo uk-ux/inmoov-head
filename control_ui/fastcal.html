@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>InMoov fast 16-channel calibrator</title>
+  <link rel="stylesheet" href="calibrator.css">
+  <link rel="stylesheet" href="fastcal.css">
+</head>
+<body>
+  <main>
+    <header class="topbar">
+      <div>
+        <p class="kicker">INMOOV HEAD / FAST CALIBRATION</p>
+        <h1>16-channel test &amp; calibrate</h1>
+        <p class="subtitle">All channels on one screen. One channel moves at a time (K command). Saves in this page, compatible with the classic calibrator.</p>
+      </div>
+      <div class="header-actions">
+        <a class="secondary button-link" href="calibrator.html">Classic calibrator</a>
+        <a class="secondary button-link" href="./">Face control</a>
+        <button id="connect">Connect Uno</button>
+      </div>
+    </header>
+
+    <section class="fastbar" aria-live="polite">
+      <div class="fastbar-row status-row">
+        <span id="connectionStatus" class="pill">Disconnected</span>
+        <span id="controllerStatus" class="pill">Outputs off</span>
+        <span id="progressStatus" class="pill">0 / 16 saved</span>
+        <label class="check"><input id="armed" type="checkbox"> Mechanism clear; power switch reachable</label>
+        <button id="outputsOff" class="danger big-off" disabled>OUTPUTS OFF</button>
+      </div>
+
+      <div class="fastbar-row active-row">
+        <div class="active-id">
+          <p id="activeGroup" class="kicker">EYES</p>
+          <strong id="activeName">Left eye horizontal</strong>
+          <span id="activeMeta" class="subtitle">CH0 · servo 1 · 1300–1700 us</span>
+        </div>
+        <div class="pulse-box">
+          <input id="pulseInput" type="number" step="1" aria-label="Pulse in microseconds">
+          <span class="unit">us</span>
+          <button id="goPulse" disabled>Go</button>
+        </div>
+        <div class="move-actions">
+          <button id="minus10" disabled>-10</button>
+          <button id="minus5" disabled>-5</button>
+          <button id="goRest" class="primary" disabled>Rest</button>
+          <button id="plus5" disabled>+5</button>
+          <button id="plus10" disabled>+10</button>
+        </div>
+        <div class="record-actions">
+          <button id="recordA" disabled>Rec <span id="labelA">A</span></button>
+          <button id="recordNeutral" disabled>Rec rest</button>
+          <button id="recordB" disabled>Rec <span id="labelB">B</span></button>
+          <button id="saveNext" class="save" disabled>Save + next</button>
+        </div>
+      </div>
+
+      <div class="fastbar-row slider-row">
+        <span id="sliderLabelA" class="subtitle">A</span>
+        <input id="pulseSlider" type="range" step="1" aria-label="Pulse slider">
+        <span id="sliderLabelB" class="subtitle">B</span>
+        <span id="positionReadout" class="pill">pos 80</span>
+      </div>
+
+      <p id="moveStatus" class="message">Connect the Uno. Selecting a card never moves anything.</p>
+      <p class="shortcuts subtitle">Keys: ←/→ ±5 us (Shift ±10) · ↑/↓ prev/next channel · R rest · A / N / B record · Enter save+next · Space or Esc outputs off</p>
+    </section>
+
+    <section id="cardGrid" class="card-grid"></section>
+
+    <section class="fast-footer">
+      <div class="export-actions">
+        <button id="exportJson" class="secondary">Export JSON</button>
+        <button id="exportCsv" class="secondary">Export CSV</button>
+      </div>
+      <p class="note">Movement uses only the firmware K command, which drives one channel and forces the other 15 off. Pulses are clamped to the compiled firmware range shown on each card; the firmware rejects anything outside it, so widening a range needs a recompile. Saving stores to this browser (same store as the classic calibrator) and does not change the Uno.</p>
+    </section>
+  </main>
+  <script type="module" src="fastcal.js"></script>
+</body>
+</html>

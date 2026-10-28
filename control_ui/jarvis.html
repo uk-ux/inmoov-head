@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IRIS · COMMAND</title>
+<link rel="icon" href="iris.ico">
+<link rel="stylesheet" href="jarvis.css">
+</head>
+<body>
+
+<header>
+  <div class="brand"><b>IRIS</b><span>PERSONAL&nbsp;ASSISTANT</span></div>
+  <div id="clock">--:--<small> --</small></div>
+  <div class="hright">
+    <div id="date">—</div>
+    <button class="badge off" id="headBadge" type="button" title="Connect the InMoov Uno">HEAD OFFLINE</button>
+    <div class="badge off" id="linkBadge">LINK OFFLINE</div>
+  </div>
+</header>
+
+<main>
+  <!-- ······ left: system ······ -->
+  <div class="col">
+    <div class="panel">
+      <h3>System</h3>
+      <div class="meter" id="mCpu">
+        <div class="row"><span>CPU</span><b>—</b></div>
+        <div class="bar"><i></i></div>
+      </div>
+      <div class="meter" id="mRam">
+        <div class="row"><span>MEMORY</span><b>—</b></div>
+        <div class="bar"><i></i></div>
+      </div>
+      <div class="meter" id="mBatt">
+        <div class="row"><span>POWER <em class="state"></em></span><b>—</b></div>
+        <div class="bar"><i></i></div>
+      </div>
+      <div class="meter" id="mDiskC">
+        <div class="row"><span>DISK C <em class="state"></em></span><b>—</b></div>
+        <div class="bar"><i></i></div>
+      </div>
+      <div class="meter" id="mDiskU">
+        <div class="row"><span>DISK U <em class="state"></em></span><b>—</b></div>
+        <div class="bar"><i></i></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Core</h3>
+      <div class="kv"><span>Brain</span><b>GEMINI + QWEN3</b></div>
+      <div class="kv"><span>Ears</span><b>WHISPER · GPU</b></div>
+      <div class="kv"><span>Voice</span><b>KOKORO / MMS</b></div>
+      <div class="kv"><span>Languages</span><b>EN · TA · TE · HI +</b></div>
+      <div class="kv"><span>Facts learned</span><b id="factCount">—</b></div>
+      <div class="kv"><span>Exchanges</span><b id="exchCount">—</b></div>
+    </div>
+  </div>
+
+  <!-- ······ center: orb ······ -->
+  <div class="center">
+    <div id="orbWrap">
+      <canvas id="orbCanvas" width="500" height="500" aria-label="IRIS core"></canvas>
+    </div>
+    <div id="stateText">CONNECTING</div>
+    <div id="convo"></div>
+    <div class="mic-tools">
+      <select id="micSelect" aria-label="Microphone"><option>Default microphone</option></select>
+      <div class="mic-meter" title="Microphone input level"><i id="micBar"></i></div>
+    </div>
+    <div class="controls">
+      <button id="talkBtn"><span id="talkLabel">HOLD TO TALK</span></button>
+      <button id="hfBtn" title="Continuous listening — say 'Iris …'">HANDS-FREE</button>
+      <input id="textIn" placeholder="Type to IRIS… (Enter to send)" autocomplete="off">
+    </div>
+  </div>
+
+  <!-- ······ right: today ······ -->
+  <div class="col">
+    <div class="panel" id="schedule">
+      <h3>Today <small id="doneCount"></small></h3>
+      <ul class="tasks" id="taskList"></ul>
+      <input class="mini" id="taskIn" placeholder="+ add task (e.g. call amma at 6 pm)" autocomplete="off">
+    </div>
+    <div class="panel">
+      <h3>Notes</h3>
+      <div class="notestats">
+        <div><b id="noteCount">0</b><span>NOTES</span></div>
+        <div><b id="connCount">0</b><span>CONNECTIONS</span></div>
+      </div>
+      <div id="noteList"></div>
+      <input class="mini" id="noteIn" placeholder="+ capture a note" autocomplete="off">
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span class="lbl">COMMANDS</span>
+  <button class="chip" data-say="daily briefing">DAILY BRIEFING</button>
+  <button class="chip" data-say="what are my tasks">MY TASKS</button>
+  <button class="chip" data-say="read my notes">MY NOTES</button>
+  <button class="chip" data-say="what time is it">TIME</button>
+  <button class="chip" data-say="battery">BATTERY</button>
+  <button class="chip" data-say="take a screenshot">SCREENSHOT</button>
+  <button class="chip" data-say="run diagnostics">DIAGNOSTICS</button>
+  <a class="plain" href="orb.html">orb view →</a>
+</footer>
+
+<script src="jarvis.js?v=12"></script>
+</body>
+</html>
